@@ -1,17 +1,24 @@
+#-----디플로이먼트 기본항목
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: story-deployment
-spec: 
-  replicas: 1
-  selector:
-    matchLabels:
+  name: stroy-deployment #'story-deployment' 이름을 가진 디플로이먼트가 생성됨
+#-----디플로이먼트 스펙
+spec:
+  replicas: 1 #디플로이먼트는 1개의 레플리카 파드를 생성하는 레플리카셋을 생성함.
+  selector: #생성된 레플리카셋이 관리할 파드를 찾아내는 방법을 정의
+    matchLabels: #파드 템플릿에 정의된 레이블(app: story)을 선택함. 그러나 파드 템플릿 자체의 규칙이 만족되는 한, 보다 정교한 선택 규칙의 적용이 가능
       app: story
-  template:
+#-----Pod 템플릿
+#pod는 '.metadata.labels'필드를 사용해 'app: story'라는 레이블을 붙임.
+#'.template.spec'필드는 파드가 도커 허브의 'jsu2956/kub-data-demo' 이미지를 실행하는 'story' 컨테이너 1개를 실행하는걸 나타냄
+#컨테이너 1개를 생성하고, '.spec.template.spec.containers[0].name'필드를 사용해서 'story' 이름을 붙임.
+  template: 
     metadata:
-      labels:
+      labels: #'app: story'라는 레이블을 붙임.
         app: story
-    spec:
-      containers:
+#-----Pod 스펙
+    spec: #개별 포드에 대한 사양을 설정
+      containers: #어떤 container가 이 pod의 일부가 될 것인지 명확히 설정
         - name: story
           image: jsu2956/kub-data-demo

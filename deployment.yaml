@@ -5,7 +5,7 @@ metadata:
   name: stroy-deployment #'story-deployment' 이름을 가진 디플로이먼트가 생성됨
 #-----디플로이먼트 스펙
 spec:
-  replicas: 1 #디플로이먼트는 1개의 레플리카 파드를 생성하는 레플리카셋을 생성함.
+  replicas: 2 #디플로이먼트는 1개의 레플리카 파드를 생성하는 레플리카셋을 생성함.
   selector: #생성된 레플리카셋이 관리할 파드를 찾아내는 방법을 정의
     matchLabels: #파드 템플릿에 정의된 레이블(app: story)을 선택함. 그러나 파드 템플릿 자체의 규칙이 만족되는 한, 보다 정교한 선택 규칙의 적용이 가능
       app: story
@@ -19,6 +19,20 @@ spec:
         app: story
 #-----Pod 스펙
     spec: #개별 포드에 대한 사양을 설정
-      containers: #어떤 container가 이 pod의 일부가 될 것인지 명확히 설정
+      containers:
         - name: story
-          image: jsu2956/kub-data-demo
+          image: jsu2956/kub-data-demo:1
+          volumeMounts:
+          - mountPath: /app/story
+            name: story-volume
+      volumes:
+        - name: story-volume
+          #emptyDir: {}
+          #'{}'은 특정 구성은 없지만, 일반적으로 충분한 모든 디폴트 설정과 함께 이 유형을 그대로 사용하기를 원한다는 의미
+          hostPath: #바인드 마운트랑 비슷
+            path: /data #minikube기준 minikube Container에 data디렉토리가 생성됨
+            type: DirectoryOrCreate #존재하지 않는다면 생성하라고 정의, 'Directory'로 하면 디렉토리가 존재하지 않으면 실패
+
+
+        
+  

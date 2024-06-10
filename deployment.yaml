@@ -29,9 +29,11 @@ spec:
         - name: story-volume
           #emptyDir: {}
           #'{}'은 특정 구성은 없지만, 일반적으로 충분한 모든 디폴트 설정과 함께 이 유형을 그대로 사용하기를 원한다는 의미
-          hostPath: #바인드 마운트랑 비슷
-            path: /data #minikube기준 minikube Container에 data디렉토리가 생성됨
-            type: DirectoryOrCreate #존재하지 않는다면 생성하라고 정의, 'Directory'로 하면 디렉토리가 존재하지 않으면 실패
+          #hostPath: #바인드 마운트랑 비슷
+          #  path: /data #minikube기준 minikube Container에 data디렉토리가 생성됨
+          #  type: DirectoryOrCreate #존재하지 않는다면 생성하라고 정의, 'Directory'로 하면 디렉토리가 존재하지 않으면 실패
+          persistentVolumeClaim:
+            claimName: host-pvc          
 
 
         
